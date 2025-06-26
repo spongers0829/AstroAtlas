@@ -1,81 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AstroAtlas</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet" />
 </head>
-
 <body>
- 
-    <header>
-  <nav class="navbar">
-    <div class="logo">AstroAtlas</div>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#missions">Missions</a></li>
-      <li><a href="#science">Science</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#support">Support</a></li>
-    </ul>
-  </nav>
 
-  <!-- Hero Section with Background Carousel -->
-  <div class="hero-carousel-wrapper">
-    <div class="carousel-bg">
-      <img src="https://bgr.com/wp-content/uploads/2022/03/AdobeStock_479160874.jpeg?quality=82&strip=all" class="carousel-img active" />
-<img src="https://t3.ftcdn.net/jpg/06/88/49/94/360_F_688499421_rlgNRHA8jrS2MUarTm3JxXKCppDMKUgL.jpg" class="carousel-img" />
-<img src="https://t3.ftcdn.net/jpg/12/63/85/84/360_F_1263858491_2FRynCnx6dSTj9YA9hhxzLb71ZcgKB4Y.jpg" class="carousel-img" />
-<img src="https://t4.ftcdn.net/jpg/13/10/41/27/360_F_1310412760_bXsYMnYicHGI8JX8H0I8fdRbAbrrQovj.jpg" class="carousel-img" />
-</div>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">AstroAtlas</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#missions">Missions</a></li>
+        <li><a href="#science">Science</a></li>
+        <li><a href="#news">News</a></li>
+        <li><a href="javascript:void(0)" onclick="toggleChatbot()">Support</a></li>
+      </ul>
+    </nav>
 
-    <div class="hero-text" data-aos="fade-up">
-      <h1>Exploring the Universe of Possibilities</h1>
-      <p>Welcome to AstroAtlas, your portal to cosmic discovery and scientific curiosity.</p>
-      <a href="#about" class="cta">Learn More</a>
-    </div>
-  </div>
-</header>
-
-<section id="explore" style="background-color: #ffffff; padding: 4rem 2rem;">
-  <div style="max-width: 1200px; margin: auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h2 style="color: #000; font-size: 2rem;">Explore</h2>
-      <a href="#" style="color: #000; font-weight: bold; text-decoration: none;">Discover More <span style="color: red;">↗</span></a>
-    </div>
-
-    <div style="display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center;">
-      <div style="position: relative;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg" alt="Sun" style="width: 250px; height: 300px; object-fit: cover;">
-        <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Sun <span style="color: red;">➡</span></div>
+    <!-- Chatbot -->
+    <div id="chatbot-popup" class="chatbot-popup">
+      <div class="chat-header">
+        AstroBot
+        <span onclick="toggleChatbot()" style="float:right;cursor:pointer;">✖</span>
       </div>
-      <div style="position: relative;">
-        <img src="https://science.nasa.gov/wp-content/uploads/2023/11/mercury-messenger-globe-pia15162.jpg" alt="Mercury" style="width: 250px; height: 300px; object-fit: cover;">
-        <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Mercury <span style="color: red;">➡</span></div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div id="chat-options" class="chat-options">
+        <button onclick="handleOption('What is AstroAtlas?')">What is AstroAtlas?</button>
+        <button onclick="handleOption('How can I contribute?')">How can I contribute?</button>
+        <button onclick="handleOption('Who created this site?')">Who created this site?</button>
+        <button onclick="handleOption('What is your mission?')">What is your mission?</button>
+        <button onclick="handleOption('How can I contact support?')">How can I contact support?</button>
       </div>
-      <div style="position: relative;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/Venus_globe.jpg" alt="Venus" style="width: 250px; height: 300px; object-fit: cover;">
-        <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Venus <span style="color: red;">➡</span></div>
-      </div>
-      <div style="position: relative;">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Nh-pluto-in-true-color_2x_JPEG-edit-frame.jpg" alt="Pluto" style="width: 250px; height: 300px; object-fit: cover;">
-        <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Pluto <span style="color: red;">➡</span></div>
+      <div class="chat-input-area">
+        <input type="text" id="user-input" placeholder="Ask your own question..." />
+        <button onclick="handleUserInput()">Send</button>
       </div>
     </div>
-  </div>
-</section>
 
+    <!-- Hero Section with Background Carousel -->
+    <div class="hero-carousel-wrapper">
+      <div class="carousel-bg">
+        <img src="https://bgr.com/wp-content/uploads/2022/03/AdobeStock_479160874.jpeg" class="carousel-img active" />
+        <img src="https://t3.ftcdn.net/jpg/06/88/49/94/360_F_688499421_rlgNRHA8jrS2MUarTm3JxXKCppDMKUgL.jpg" class="carousel-img" />
+        <img src="https://t3.ftcdn.net/jpg/12/63/85/84/360_F_1263858491_2FRynCnx6dSTj9YA9hhxzLb71ZcgKB4Y.jpg" class="carousel-img" />
+        <img src="https://t4.ftcdn.net/jpg/13/10/41/27/360_F_1310412760_bXsYMnYicHGI8JX8H0I8fdRbAbrrQovj.jpg" class="carousel-img" />
+      </div>
+      <div class="hero-text" data-aos="fade-up">
+        <h1>Exploring the Universe of Possibilities</h1>
+        <p>Welcome to AstroAtlas, your portal to cosmic discovery and scientific curiosity.</p>
+        <a href="#about" class="cta">Learn More</a>
+      </div>
+    </div>
+  </header>
 
-
-  <section id="about" class="section" data-aos="fade-right">
-    <h2>About AstroAtlas</h2>
-    <p>AstroAtlas is a space exploration initiative focused on finding our place in the cosmos through research,
-      missions, and public engagement.</p>
+  <!-- Explore Section -->
+  <section id="explore" style="background-color: #ffffff; padding: 4rem 2rem;">
+    <div style="max-width: 1200px; margin: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <h2 style="color: #000; font-size: 2rem;">Explore</h2>
+        <a href="#" style="color: #000; font-weight: bold; text-decoration: none;">Discover More <span style="color: red;">↗</span></a>
+      </div>
+      <div style="display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; justify-content: center;">
+        <div style="position: relative;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Solar_sys8.jpg" alt="Sun" style="width: 250px; height: 300px; object-fit: cover;">
+          <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Sun <span style="color: red;">➡</span></div>
+        </div>
+        <div style="position: relative;">
+          <img src="https://science.nasa.gov/wp-content/uploads/2023/11/mercury-messenger-globe-pia15162.jpg" alt="Mercury" style="width: 250px; height: 300px; object-fit: cover;">
+          <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Mercury <span style="color: red;">➡</span></div>
+        </div>
+        <div style="position: relative;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/Venus_globe.jpg" alt="Venus" style="width: 250px; height: 300px; object-fit: cover;">
+          <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Venus <span style="color: red;">➡</span></div>
+        </div>
+        <div style="position: relative;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Nh-pluto-in-true-color_2x_JPEG-edit-frame.jpg" alt="Pluto" style="width: 250px; height: 300px; object-fit: cover;">
+          <div style="position: absolute; bottom: 10px; left: 10px; color: white; font-weight: bold;">Pluto <span style="color: red;">➡</span></div>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- About Section -->
+  <section id="about" class="section" data-aos="fade-right">
+    <h2>About AstroAtlas</h2>
+    <p>AstroAtlas is a space exploration initiative focused on finding our place in the cosmos through research, missions, and public engagement.</p>
+  </section>
+
+  <!-- Missions -->
   <section id="missions" class="section" data-aos="fade-left">
     <h2>Our Missions</h2>
     <div class="cards">
@@ -90,89 +107,78 @@
     </div>
   </section>
 
+  <!-- News Highlights -->
   <section id="news-highlights" class="section" data-aos="fade-up">
-  <h2>In search of what’s news?</h2>
-  <p>The latest industry news, interviews, technologies, and resources.</p>
-  <div class="news-grid">
-    <!-- Left Big News -->
-    <div class="news-left">
-      <img src="https://www.seti.org/media/dyljjyme/ata-29-simon-steel-bw.jpg" alt="Radio Astronomy">
-      <div class="news-text">
-        <p class="news-meta">Jun 18, 2025 • SETI news • Press Release</p>
-        <h3>
-  <a href="news1.html" target="_blank" style="color: inherit; text-decoration: none;">
-    SETI Institute and SpaceX Collaborate to Minimize Satellite Interference on Radio Astronomy
-  </a>
-</h3>
-      </div>
-    </div>
-
-    <!-- Right Column Cards -->
-    <div class="news-right">
-      <div class="news-card">
-        <img src="https://cdn.mos.cms.futurecdn.net/vinxQ7SctQUrVPbB3FJwWU-970-80.png.webp" alt="SkyMapper">
+    <h2>In search of what’s news?</h2>
+    <p>The latest industry news, interviews, technologies, and resources.</p>
+    <div class="news-grid">
+      <div class="news-left">
+        <img src="https://www.seti.org/media/dyljjyme/ata-29-simon-steel-bw.jpg" alt="Radio Astronomy">
         <div class="news-text">
-          <p class="news-meta">Jun 15, 2025 • AstroAtlas • Data Science</p>
-          <h4>SpaceX's Starship explodes on Texas launch pad in 'catastrophic failure' during routine test</h4>
+          <p class="news-meta">Jun 18, 2025 • SETI news • Press Release</p>
+          <h3><a href="news1.html" target="_blank" style="color: inherit; text-decoration: none;">SETI Institute and SpaceX Collaborate to Minimize Satellite Interference</a></h3>
         </div>
       </div>
-      <div class="news-card">
-        <img src="https://www.seti.org/media/d3en15b1/ppod-cover-w2025_06_09_v2.jpg" alt="Cosmos">
-        <div class="news-text">
-          <p class="news-meta">Jun 17, 2025 • PPOD</p>
-          <h4>Planetary Picture of the Day – Week of June 09, 2025</h4>
+      <div class="news-right">
+        <div class="news-card">
+          <img src="https://cdn.mos.cms.futurecdn.net/vinxQ7SctQUrVPbB3FJwWU-970-80.png.webp" alt="SkyMapper">
+          <div class="news-text">
+            <p class="news-meta">Jun 15, 2025 • AstroAtlas • Data Science</p>
+            <h4>SpaceX's Starship explodes on Texas launch pad in 'catastrophic failure' during routine test</h4>
+          </div>
+        </div>
+        <div class="news-card">
+          <img src="https://www.seti.org/media/d3en15b1/ppod-cover-w2025_06_09_v2.jpg" alt="Cosmos">
+          <div class="news-text">
+            <p class="news-meta">Jun 17, 2025 • PPOD</p>
+            <h4>Planetary Picture of the Day – Week of June 09, 2025</h4>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
+  <!-- Calendar Event Section -->
+  <section id="calendar-events" class="section" data-aos="fade-up">
+    <h2>Discover Space Events by Date</h2>
+    <p>Select a date to uncover historical events in space exploration and astronomy.</p>
+    <div style="margin: 2rem auto; text-align: center;">
+      <input type="date" id="event-date" style="padding: 0.5rem; font-size: 1rem; border-radius: 5px; border: none;" />
+      <button onclick="fetchSpaceEvents()" class="cta" style="margin-left: 10px;">Find Events</button>
+    </div>
+    <div id="events-container" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; margin-top: 2rem;"></div>
+  </section>
 
+  <!-- Science -->
   <section id="science" class="section" data-aos="fade-right">
     <h2>Science & Discoveries</h2>
     <p>Get involved in real-time data analysis and space science research through our community science programs.</p>
   </section>
 
+  <!-- News -->
   <section id="news" class="section" data-aos="fade-left">
     <h2>Latest News</h2>
     <p>Stay updated with our recent findings, publications, and events that shape the future of space exploration.</p>
   </section>
 
+  <!-- Support -->
   <section id="support" class="section" data-aos="zoom-in">
     <h2>Support Our Work</h2>
     <p>Join us in our quest to explore the cosmos by donating or becoming a part of our volunteer network.</p>
     <a href="#" class="cta">Donate Now</a>
   </section>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 AstroAtlas. All rights reserved.</p>
   </footer>
 
+  <!-- Scripts -->
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init();
   </script>
+
 </body>
-
-<script>
-  let slideIndex = 0;
-  const slides = document.querySelectorAll('.carousel-image');
-
-  function showSlides() {
-    slides.forEach((slide, i) => {
-      slide.style.opacity = '0';
-    });
-    slideIndex++;
-    if (slideIndex > slides.length) {
-      slideIndex = 1;
-    }
-    slides[slideIndex - 1].style.opacity = '1';
-    setTimeout(showSlides, 4000); // Change image every 4 seconds
-  }
-
-  window.onload = showSlides;
-</script>
-
-
 </html>
