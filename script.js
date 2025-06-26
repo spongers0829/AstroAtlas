@@ -14,19 +14,17 @@ function nextSlide() {
   showSlide(currentSlide);
 }
 
-setInterval(nextSlide, 4000);
+setInterval(nextSlide, 4000); // Change image every 4 seconds
 showSlide(currentSlide);
 
 // ====== AOS Animation Init ======
-if (typeof AOS !== "undefined") {
-  AOS.init({
-    duration: 1000,
-    easing: 'ease-in-out',
-    once: true,
-  });
-}
+AOS.init({
+  duration: 1000,
+  easing: 'ease-in-out',
+  once: true,
+});
 
-// ====== Lazy Reveal for Image of Day Section ======
+// ====== Optional: Lazy Reveal for Image of Day Section ======
 const imageDaySection = document.querySelector(".image-day-section");
 if (imageDaySection) {
   imageDaySection.style.opacity = 0;
@@ -50,7 +48,6 @@ window.addEventListener('error', function (e) {
   }
 }, true);
 
-// ====== Chatbot Logic ======
 function handleOption(questionText) {
   appendMessage("You", questionText);
   respondToUser(questionText.toLowerCase());
@@ -99,6 +96,7 @@ function toggleChatbot() {
   bot.style.display = bot.style.display === "flex" ? "none" : "flex";
 }
 
+
 // ====== Calendar Event Fetching ======
 async function fetchSpaceEvents() {
   const container = document.getElementById("events-container");
@@ -122,6 +120,7 @@ async function fetchSpaceEvents() {
 
     const data = await response.json();
 
+    // Combine events, births, deaths, holidays
     const events = [...(data.events || []), ...(data.births || []), ...(data.deaths || [])].filter(event =>
       /(space|nasa|astronom|galaxy|planet|apollo|cosmo|satellite|universe|rocket)/i.test(event.text)
     );
