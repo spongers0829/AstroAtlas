@@ -14,17 +14,19 @@ function nextSlide() {
   showSlide(currentSlide);
 }
 
-setInterval(nextSlide, 4000); // Change image every 4 seconds
+setInterval(nextSlide, 4000);
 showSlide(currentSlide);
 
 // ====== AOS Animation Init ======
-AOS.init({
-  duration: 1000,
-  easing: 'ease-in-out',
-  once: true,
-});
+if (typeof AOS !== "undefined") {
+  AOS.init({
+    duration: 1000,
+    easing: 'ease-in-out',
+    once: true,
+  });
+}
 
-// ====== Optional: Lazy Reveal for Image of Day Section ======
+// ====== Lazy Reveal for Image of Day Section ======
 const imageDaySection = document.querySelector(".image-day-section");
 if (imageDaySection) {
   imageDaySection.style.opacity = 0;
@@ -47,3 +49,109 @@ window.addEventListener('error', function (e) {
     e.target.style.display = 'none';
   }
 }, true);
+
+// ====== Chatbot Logic ======
+function handleOption(questionText) {
+  appendMessage("You", questionText);
+  respondToUser(questionText.toLowerCase());
+}
+
+function handleUserInput() {
+  const inputField = document.getElementById("user-input");
+  const userText = inputField.value.trim();
+  if (!userText) return;
+
+  appendMessage("You", userText);
+  respondToUser(userText.toLowerCase());
+  inputField.value = "";
+}
+
+function appendMessage(sender, text) {
+  const msgBox = document.getElementById("chat-messages");
+  const msg = document.createElement("div");
+  msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
+  msgBox.appendChild(msg);
+  msgBox.scrollTop = msgBox.scrollHeight;
+}
+
+function respondToUser(input) {
+  let response = "Hmm, I don’t have that answer yet. Try another question.";
+
+  if (input.includes("astroatlas")) {
+    response = "AstroAtlas is a cosmic discovery portal where you can explore astronomy events, news, and missions.";
+  } else if (input.includes("contribute")) {
+    response = "You can contribute by sharing the site, donating, or joining our community programs.";
+  } else if (input.includes("created")) {
+    response = "AstroAtlas was built by a passionate team of space enthusiasts during a hackathon!";
+  } else if (input.includes("mission")) {
+    response = "Our mission is to spark curiosity about the cosmos through science, stories, and interactive features.";
+  } else if (input.includes("contact")) {
+    response = "You can reach out via the contact form or social media links in the footer.";
+  }
+
+  setTimeout(() => {
+    appendMessage("AstroBot", response);
+  }, 500);
+}
+
+function toggleChatbot() {
+  const bot = document.getElementById("chatbot-popup");
+  bot.style.display = bot.style.display === "flex" ? "none" : "flex";
+}
+
+// ====== Calendar Event Fetching ======
+async function fetchSpaceEvents() {
+  const container = document.getElementById("events-container");
+  const inputDate = document.getElementById("event-date").value;
+  container.innerHTML = "Loading events...";
+
+  if (!inputDate) {
+    container.innerHTML = "<p style='color: orange;'>Please select a date.</p>";
+    return;
+  }
+
+  const [year, month, day] = inputDate.split("-");
+  const apiUrl = `https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/${month}/${day}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      headers: {
+        "Accept": "application/json"
+      }
+    });
+
+    const data = await response.json();
+
+    const events = [...(data.events || []), ...(data.births || []), ...(data.deaths || [])].filter(event =>
+      /(space|nasa|astronom|galaxy|planet|apollo|cosmo|satellite|universe|rocket)/i.test(event.text)
+    );
+
+    if (events.length === 0) {
+      container.innerHTML = "<p style='color: orange;'>No space-related events found on this date. Try another date!</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+
+    events.slice(0, 10).forEach(event => {
+      const page = event.pages?.[0];
+      const img = page?.thumbnail?.source || "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Space_Shuttle_Columbia_launching.jpg/640px-Space_Shuttle_Columbia_launching.jpg";
+      const title = event.text;
+      const year = event.year;
+
+      const card = document.createElement("div");
+      card.className = "event-card";
+
+      card.innerHTML = `
+        <img src="${img}" alt="Event Image">
+        <h3>${year}</h3>
+        <p>${title}</p>
+      `;
+
+      container.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    container.innerHTML = "<p style='color: red;'>Failed to load events. Try again later.</p>";
+  }
+}
